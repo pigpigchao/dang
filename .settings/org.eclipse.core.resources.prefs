@@ -1,16 +1,14 @@
-#Mon Oct 08 08:34:13 CST 2012
 eclipse.preferences.version=1
-encoding//src/com/tarena/dang/action/cart/CartAction.java=GBK
-encoding//src/com/tarena/dang/action/main/BookListAction.java=GBK
-encoding//src/com/tarena/dang/action/main/CategoryAction.java=GBK
-encoding//src/com/tarena/dang/action/user/CheckPostalCodeAction.java=GBK
-encoding//src/com/tarena/dang/action/user/CheckUserAction.java=GBK
-encoding//src/com/tarena/dang/action/user/ExitAction.java=GBK
-encoding//src/com/tarena/dang/action/user/RegistAction.java=GBK
-encoding//src/com/tarena/dang/interceptor=GBK
-encoding//src/com/tarena/dang/service=GBK
-encoding//src/com/tarena/dang/service/impl=GBK
-encoding//src/com/tarena/dang/util=GBK
+encoding//src/com/dang/action/cart/CartAction.java=GBK
+encoding//src/com/dang/action/main/BookListAction.java=GBK
+encoding//src/com/dang/action/main/CategoryAction.java=GBK
+encoding//src/com/dang/action/user/CheckPostalCodeAction.java=GBK
+encoding//src/com/dang/action/user/CheckUserAction.java=GBK
+encoding//src/com/dang/action/user/ExitAction.java=GBK
+encoding//src/com/dang/action/user/RegistAction.java=GBK
+encoding//src/com/dang/interceptor=GBK
+encoding//src/com/dang/service/impl=GBK
+encoding//src/com/dang/util=GBK
 encoding//src/db.properties=utf-8
 encoding/<project>=GBK
 encoding/dangdang.sql=UTF-8
