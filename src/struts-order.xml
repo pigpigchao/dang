@@ -6,7 +6,7 @@
  	<package name="order" namespace="/order" extends="dang-default">
  		<interceptors>
 			<interceptor name="checklogin"
-				 class="com.tarena.dang.interceptor.LoginInterceptor">
+				 class="com.dang.interceptor.LoginInterceptor">
 			</interceptor>
 			<interceptor-stack name="demoStack">
 				<interceptor-ref name="checklogin"></interceptor-ref>
@@ -15,7 +15,7 @@
 			
 		</interceptors>	
  		<action name="order" 
- 				class="com.tarena.dang.action.order.OrderInfoAction">
+ 				class="com.dang.action.order.OrderInfoAction">
  		<interceptor-ref name="demoStack"></interceptor-ref>
  			<result name="login">
  				/user/login_form.jsp
@@ -30,7 +30,7 @@
  		
  		
  		<action name="orderok"
- 				class="com.tarena.dang.action.order.OrderOkAction">
+ 				class="com.dang.action.order.OrderOkAction">
  			<result name="success">
  				/order/order_ok.jsp
  			</result>
@@ -40,14 +40,14 @@
  		</action>
  		
  		<action name="loadaddress" method="loadAddress"
- 				class="com.tarena.dang.action.order.OrderAddressAction"> 
+ 				class="com.dang.action.order.OrderAddressAction"> 
  			<result type="json">
  				<param name="root">addresses</param>
  			</result>
  		</action>
  		
  		<action name="loadinfo" method="loadInfo"
- 				class="com.tarena.dang.action.order.OrderAddressAction"> 
+ 				class="com.dang.action.order.OrderAddressAction"> 
  			<result type="json">
  				<param name="root">address</param>
  			</result>

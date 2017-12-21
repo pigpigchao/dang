@@ -5,13 +5,13 @@
  <struts>
  	<package name="user" namespace="/user" extends="dang-default">
  		<action name="regist" 
- 				class="com.tarena.dang.action.user.RegistAction">
+ 				class="com.dang.action.user.RegistAction">
  			<result name="verify" type="redirect">
  				/user/verify_form.jsp
  			</result>
  		</action>
   		<action name="checkEmail"
- 				class="com.tarena.dang.action.user.CheckemailAction">
+ 				class="com.dang.action.user.CheckemailAction">
  			<result type="json">
  				<param name="root">
  				ok
@@ -19,7 +19,7 @@
  			</result>		
  		</action>
  		<action name="checkPostalCode"
- 				class="com.tarena.dang.action.user.CheckPostalCodeAction">
+ 				class="com.dang.action.user.CheckPostalCodeAction">
  			<result name="fail" type="redirect">
  				/user/verify_form.jsp
  			</result>
@@ -28,13 +28,13 @@
  			</result>
  		</action>	
  		<action name="checkUser"
- 				class="com.tarena.dang.action.user.CheckUserAction">
+ 				class="com.dang.action.user.CheckUserAction">
  			<result name="main" type="redirect">/main/main.jsp</result>
  			<result name="verify" type="redirect">/user/verify_form.jsp</result>
  			<result name="login">/user/login_form.jsp</result>
  		</action>	
  		<action name="exit"
- 				class="com.tarena.dang.action.user.ExitAction">
+ 				class="com.dang.action.user.ExitAction">
  			<result type="redirect">
  				/main/main.jsp
  			</result>		

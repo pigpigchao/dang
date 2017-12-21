@@ -6,13 +6,13 @@
  	<package name="cart" namespace="/cart" extends="dang-default">
  			<!--定义购物车模块的Action  -->
  		<action name="buy" 
- 				class="com.tarena.dang.action.cart.CartAction" method="buy">
+ 				class="com.dang.action.cart.CartAction" method="buy">
  			<result type="json" name="success">
  				<param name="root">ok</param>
  			</result>
  		</action>	
  		<action name="cartlist"
- 				class="com.tarena.dang.action.cart.CartListAction">
+ 				class="com.dang.action.cart.CartListAction">
  			
  			<result name="success" >
  				/cart/cart_list.jsp

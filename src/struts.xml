@@ -12,7 +12,7 @@
  	<package name="dang-default" extends="json-default">
  	<!-- 定义拦截器 -->
  		<interceptors>
- 			<interceptor name="transaction" class="com.tarena.dang.interceptor.TransactionInterceptor"></interceptor>
+ 			<interceptor name="transaction" class="com.dang.interceptor.TransactionInterceptor"></interceptor>
  			<interceptor-stack name="transactionStack">
  				<interceptor-ref name="transaction"></interceptor-ref>
  				<interceptor-ref name="defaultStack"></interceptor-ref>
@@ -33,13 +33,13 @@
  	</global-exception-mappings>
  	-->
  		<action name="image" 
- 				class="com.tarena.dang.action.ImageAction">
+ 				class="com.dang.action.ImageAction">
  			<result type="stream">
  				<param name="inputName">imageStream</param>
  			</result>
  		</action>
  		<action name="checkCode"
- 				class="com.tarena.dang.action.CheckcodeAction">
+ 				class="com.dang.action.CheckcodeAction">
  			<result type="json">
  				<param name="root">
  				ok
