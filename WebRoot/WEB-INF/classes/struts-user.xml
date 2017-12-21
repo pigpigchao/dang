@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+ <struts>
+ 	<package name="user" namespace="/user" extends="dang-default">
+ 		<action name="regist" 
+ 				class="com.tarena.dang.action.user.RegistAction">
+ 			<result name="verify" type="redirect">
+ 				/user/verify_form.jsp
+ 			</result>
+ 		</action>
+  		<action name="checkEmail"
+ 				class="com.tarena.dang.action.user.CheckemailAction">
+ 			<result type="json">
+ 				<param name="root">
+ 				ok
+ 				</param>
+ 			</result>		
+ 		</action>
+ 		<action name="checkPostalCode"
+ 				class="com.tarena.dang.action.user.CheckPostalCodeAction">
+ 			<result name="fail" type="redirect">
+ 				/user/verify_form.jsp
+ 			</result>
+ 			<result name="success" type="redirect">
+ 				/user/register_ok.jsp
+ 			</result>
+ 		</action>	
+ 		<action name="checkUser"
+ 				class="com.tarena.dang.action.user.CheckUserAction">
+ 			<result name="main" type="redirect">/main/main.jsp</result>
+ 			<result name="verify" type="redirect">/user/verify_form.jsp</result>
+ 			<result name="login">/user/login_form.jsp</result>
+ 		</action>	
+ 		<action name="exit"
+ 				class="com.tarena.dang.action.user.ExitAction">
+ 			<result type="redirect">
+ 				/main/main.jsp
+ 			</result>		
+ 		</action>
+ 	</package>
+ 
+ </struts>

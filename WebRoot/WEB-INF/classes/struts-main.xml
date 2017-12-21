@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+ <struts>
+ 	<package name="main" namespace="/main" extends="dang-default">
+ 		<!--定义产品浏览模块的Action  -->
+ 		<action name="findnew" 
+ 				class="com.tarena.dang.action.main.NewAction">
+ 			<result>
+ 				/main/new.jsp
+ 			</result>	
+ 		</action>
+		<action name="findcategory" class="com.tarena.dang.action.main.CategoryAction">
+			<result>
+				/main/category.jsp
+			</result>
+		</action>
+		<action name="booklist" class="com.tarena.dang.action.main.BookListAction">
+			<param name="size">3</param>
+			<result>
+				/main/book_list.jsp
+			</result>
+		</action>
+		<action name="recommendlist"
+			  	class="com.tarena.dang.action.main.RecommendAction">
+			<param name="recommendNum">2</param> 	
+			<result>
+				/main/recommend.jsp
+			</result>
+		</action>
+		<action name="findhot" class="com.tarena.dang.action.main.HotAction">
+			<result>
+				/main/hot.jsp
+			</result>
+		</action>
+		<action name="findhot1" class="com.tarena.dang.action.main.HotAction">
+			<result>
+				/main/newhot.jsp
+			</result>
+		</action>
+		<action name="showbook"
+				class="com.tarena.dang.action.main.ShowBookAction">
+			<result>
+				/main/book.jsp
+			</result>	
+		</action>
+ 	</package>
+ 
+ </struts>

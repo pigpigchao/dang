@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Struts2Diagram version="2.0">
+  <package name="order" location="0,0" size="0,0">
+    <action name="order" location="0,0" size="0,0">
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="order_info.jsp" />
+      </result>
+    </action>
+    <action name="orderform" location="0,0" size="0,0">
+      <result name="login">
+        <resourceEdge source="login" routing="0" target="login_form.jsp" />
+      </result>
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="address_form.jsp" />
+      </result>
+    </action>
+    <action name="orderok" location="0,0" size="0,0">
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="order_ok.jsp" />
+      </result>
+      <result name="main">
+        <resourceEdge source="main" routing="0" target="main.jsp" />
+      </result>
+    </action>
+    <action name="loadaddress" location="0,0" size="0,0">
+      <result name="success" />
+    </action>
+    <action name="loadinfo" location="0,0" size="0,0">
+      <result name="success" />
+    </action>
+  </package>
+  <webResource name="order_info.jsp" path="/order/order_info.jsp" location="0,0" size="0,0" />
+  <webResource name="login_form.jsp" path="/user/login_form.jsp" location="0,0" size="0,0" />
+  <webResource name="address_form.jsp" path="/order/address_form.jsp" location="0,0" size="0,0" />
+  <webResource name="order_ok.jsp" path="/order/order_ok.jsp" location="0,0" size="0,0" />
+  <webResource name="main.jsp" path="/main/main.jsp" location="0,0" size="0,0" />
+</Struts2Diagram>
+

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+ <struts>
+ 	<!-- 加载各个模块的配置文件 -->
+ 	<include file="struts-user.xml"/>
+ 	<include file="struts-cart.xml"/>
+ 	<include file="struts-main.xml"/>
+ 	<include file="struts-order.xml"/>
+ 	<!-- 定义工程底层的package -->
+ 	<package name="dang-default" extends="json-default">
+ 	<!-- 定义拦截器 -->
+ 		<interceptors>
+ 			<interceptor name="transaction" class="com.tarena.dang.interceptor.TransactionInterceptor"></interceptor>
+ 			<interceptor-stack name="transactionStack">
+ 				<interceptor-ref name="transaction"></interceptor-ref>
+ 				<interceptor-ref name="defaultStack"></interceptor-ref>
+ 			</interceptor-stack>
+ 		</interceptors>
+ 	<!-- 将transactionStack设置为默认调用的拦截器 -->
+ 		<default-interceptor-ref name="transactionStack"/>	
+	 	<!-- 定义全局的result -->
+ 	<!-- 异常处理,将框架捕获的异常调用指定的result处理 -->
+ 	<!-- 
+ 	<global-results>
+ 		<result name="error">/error.jsp</result>
+ 	</global-results>
+ 	<global-exception-mappings>
+ 		<exception-mapping result="error" exception="java.lang.Exception">
+ 		
+ 		</exception-mapping>
+ 	</global-exception-mappings>
+ 	-->
+ 		<action name="image" 
+ 				class="com.tarena.dang.action.ImageAction">
+ 			<result type="stream">
+ 				<param name="inputName">imageStream</param>
+ 			</result>
+ 		</action>
+ 		<action name="checkCode"
+ 				class="com.tarena.dang.action.CheckcodeAction">
+ 			<result type="json">
+ 				<param name="root">
+ 				ok
+ 				</param>
+ 			</result>
+ 		</action>
+
+ 	</package>
+ 
+ </struts>

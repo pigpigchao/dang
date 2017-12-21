@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+ <struts>
+ 	<package name="order" namespace="/order" extends="dang-default">
+ 		<interceptors>
+			<interceptor name="checklogin"
+				 class="com.tarena.dang.interceptor.LoginInterceptor">
+			</interceptor>
+			<interceptor-stack name="demoStack">
+				<interceptor-ref name="checklogin"></interceptor-ref>
+				<interceptor-ref name="transactionStack"></interceptor-ref>
+			</interceptor-stack>
+			
+		</interceptors>	
+ 		<action name="order" 
+ 				class="com.tarena.dang.action.order.OrderInfoAction">
+ 		<interceptor-ref name="demoStack"></interceptor-ref>
+ 			<result name="login">
+ 				/user/login_form.jsp
+ 			</result>
+ 			<result name="success">
+ 				/order/order_info.jsp
+ 			</result>		
+ 		</action>
+ 		
+
+ 		
+ 		
+ 		
+ 		<action name="orderok"
+ 				class="com.tarena.dang.action.order.OrderOkAction">
+ 			<result name="success">
+ 				/order/order_ok.jsp
+ 			</result>
+ 			<result name="main">
+ 				/main/main.jsp
+ 			</result>	
+ 		</action>
+ 		
+ 		<action name="loadaddress" method="loadAddress"
+ 				class="com.tarena.dang.action.order.OrderAddressAction"> 
+ 			<result type="json">
+ 				<param name="root">addresses</param>
+ 			</result>
+ 		</action>
+ 		
+ 		<action name="loadinfo" method="loadInfo"
+ 				class="com.tarena.dang.action.order.OrderAddressAction"> 
+ 			<result type="json">
+ 				<param name="root">address</param>
+ 			</result>
+ 		</action>
+ 	</package>
+ 
+ </struts>

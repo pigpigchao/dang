@@ -1,0 +1,112 @@
+一、项目名
+	GWAP 电子商务系统
+二、开发平台
+	Linux操作系统+MyEclipse开发环境+Tomcat6.0.32服务器
+三、应用技术
+	分层结构：
+	表现层(V):JSP,js,Ajax(推荐 jQuery),EL表达式,Struts2标签
+	控制层(C):（主）Struts2控制器，Action(分控制器)
+	业务层(M):javaBean
+	数据访问层（持久层）(M):DAO组件
+	主要技术：jQuery+Struts2+JDBC	
+四、项目描述
+	1）用户管理
+	登录，注册，邮箱验证，注册成功提示，登录检查，注册的js检查
+	2）产品浏览
+	主界面，类别浏览界面，产品详细界面等
+	3）购物车
+	购买，删除，恢复，变更数量，金额统计，列表显示
+	4）订单创建
+	订单确认，填写订单收货地址，创建订单和订单明细，创建成功提示
+五、责任描述
+	本项目有本人独立完成，具体实现了四个模块。整个实现过程采用了MVC设计思想，将视图、
+	业务逻辑、控制层相分离，使业务逻辑的实现过程更加清晰，增强了代码的可维护性。
+	a 用户注册页面，填写地址页面的客户端验证采用了JavaScript jQuery ,Ajax来实现。
+	
+	b 事物处理采用了拦截器技术
+	c 受限资源访问采用了拦截器技术。例如 只有登录的用户才可进行下订单操作,
+	  否则只可浏览，购买。
+	d 对购物车的增加、删除、恢复，对商品数量的修改等操作（采用session 
+	  cookie技术实现购物车信息临时保存，和长期保存）.	
+	e 商品的分页显示(采用struts标签控制页码的点击按钮是否可用)
+	f 页面的效果显示,例如滑动鼠标看大图(采用js实现页面效果)	
+	g 地址填写下拉框（采用了Javascript Ajax进行了验证信息，显示之前用户的表单信息）
+	
+六、项目总结
+	开发项目一定要做好需求分析；做好分层；代码一定要规范；
+	独立完成一个项目之前,不可失去信心,可以为自己每天安排要实现的模块，遇到错误，别急着找老师解决,
+	先自己看错误代码提示,自己努力解决,可以学到排错经验,利于以后的项目开发，另外多和同学交流,
+	利于启发自己的开发思路
+七、开发过程遇到的困难
+	1、cookie和session在项目中的如何应用
+		1）cookie主要用来保存购物车中条目,避免用户购买中途离开，返回后而找不到已经购买过的物品。
+			cookie在两个地方清空：购物车中清空购物车按钮，订单生成功时清空cookie。
+		2）session 用在三个地方
+			保存已登录用户；保存购物条目；保存拦截地址
+	2、cookie被禁止以后如何继续使用session
+		解决方式:可以使用URL重写来解决这个问题		
+	2、分页是如何实现的
+		1)当向BookListAction发送请求时，会将要显示的页数，和每页要显示的条数当作参
+		数传过去，BookListAction接收到请求会去数据库中查询数据，根据page和pageSize查询出要显示
+		的数据，然后转发到book_list.jsp界面. 
+		2)分页导航处控制使用了struts标签，当page=1时，上一页不能点，当page=maxPage时，
+		下一页不能点。最大页数是根据pageSize和currentId从数据库中选出来的。
+	
+	3、排序是如何实现的	
+		排序是通过select 的onchang事件触发刷新整个页面，在发送请求时，将排序方式当作
+		参数传到BookListAction中
+		function Order(){					
+		location="/dangdang/main/booklist?
+				cid="+cid+"&pid="+pid+"&cturn="+cturn+"&orderBy="+val;
+					}
+	4、如何避免表单重复提交
+		在订单生成时，避免表单重复提交是判断session中的cart是否为空，如果为空则返回main.jsp
+		否则将订单，订单详情，地址（判断新旧地址）保存。
+	5、地址回填
+		1）地址加载
+			在order_info页面，点击下一步时，会向OrderAddressAction发送请求，执行完毕
+			会转发到address_form.jsp 页面，通过<select>标签将List<Address>循环
+			显示出来。
+				$.post("/dangdang/order/loadaddress",
+				function(data){
+					$.each(data,function(i,n){
+						$("#address").append(
+						$("<option value='"+n.id+"'>"+n.receiveName+"</option>"))
+					});
+				});
+			然后通过<select>标签的change()事件触发ajax请求，根据用户选择的addressId去Action
+			中将完成的地址取回来，显示到文本框中。
+					$("#address").change(function(){
+					$.post("/dangdang/order/loadinfo",
+							{"addressId":$(this).val()},
+					function(data){
+						$("#receiveName").val(data.receiveName);
+						$("#fullAddress").val(data.fullAddress);
+						$("#postalCode").val(data.postalCode);
+						$("#phone").val(data.phone);
+						$("#mobile").val(data.mobile);
+						$("#addressId").val(data.id);
+						
+					});
+				});
+
+		2）地址保存
+			地址处可以选择新地址和旧地址，判断如果是新地址则在保存订单和购物详情的同时，将地址
+			也保存到d_receive_address表中。如果是旧地址(注意此时input区域是只读
+			属性，不能对旧地址修改，避免因修改而导致不一致)则只保存订单和购物详情。
+		3）如何判断是否保存地址	
+			解决这个问题是将一个隐藏的<input>标签放到form 表单中，<input>的值是<select>标签的id。
+			这样在Action中就可以接收<select>中选择的value,判断value是0还是其他的，
+			如果是0（0对应的是请填写新地址）就保存地址，其他的就不保存。
+			把value作为参数传出去， OrderAddressAction接收id通过DAO数据查询如果能得到对象就
+            是旧地址，不能得到就是新地址	
+        6、乱码问题的解决方案（具体问题具体分析）
+        	1）把dangdang.sql文件中可能会出现中文的表加上默认编码为utf-8 (
+        		default charset=utf8);
+        	2) 把数据库的默认编码设置成utf-8(useUnicode=true&characterEncoding=utf8)
+        	3) 把所有配置文件的编码设置成utf-8(设置方法同上)
+        	4）把jsp文件的编码格式设置成utf-8
+        7、重定向和转发的问题
+        	不需要接收数据的用重定向，需要接收数据用转发。（重定向是两次请求，转发是
+        	一次请求）,转发用于一件事未做完，重定向用于一件事已经完成。
+	

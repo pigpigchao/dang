@@ -1,0 +1,223 @@
+1.项目需求
+  模拟当当网开发一套电子商务系统.
+  模拟产品浏览,购物车,订单,用户管理等功能.
+  1)用户管理模块(3天)user
+  	用户登录,用户注册,邮箱的验证
+  2)产品浏览模块(2天)main
+    产品主界面,分类浏览界面
+  3)购物车模块(1.5天)cart
+    购买,删除,恢复,更新数量等
+  4)订单模块(1.5天)order
+    订单确认,填写送货地址,订单生成
+2.技术架构
+  主要采用Ajax+Struts2+JDBC开发技术.
+  基于MVC模式分层设计.
+  表现层:JSP,Ajax,jQuery
+  控制层:Struts2 Filter控制器+Action
+  业务层:Sevice组件(业务复杂)
+  数据访问层:DAO组件,基于JDBC技术
+  
+3.数据库设计
+  数据导入:dangdang.sql
+       create database dangdang;
+       use dangdang;
+       set names utf8;
+       source sql文件路径;
+  数据表如下:
+  d_user:存储用户信息
+  d_receive_address:存储用户的收货地址信息
+  d_category:存储产品类别信息
+  d_product:存储各种类型产品共有信息
+  d_category_product:存储类别和产品对应关系.
+  d_book:存储图书特有信息
+	d_order:存储订单信息
+	d_item:存储订单明细信息
+  
+4.搭建工程开发
+  1)开发包
+  	Struts2框架开发包(5个核心+1个jsonplugin+1个commons-io.jar)
+  	JDBC开发包
+  	数据库连接池组件
+  	好处:a.减少connection对象的创建和销毁.
+  		   b.对象connection数量进行控制管理,
+  		     对数据库操作起到保护作用.
+  2)src结构
+  	com.tarena.dang.action
+  	com.tarena.dang.action.user//用户管理
+  	com.tarena.dang.action.order//订单模块
+  	com.tarena.dang.action.cart//购物车
+  	com.tarena.dang.action.main//产品浏览
+  	com.tarena.dang.service
+  	com.tarena.dang.dao
+  	com.tarena.dang.entity
+  	com.tarena.dang.util
+  	com.tarena.dang.interceptor
+  	
+  3)配置文件
+  	a.web.xml配置Struts2控制器
+  	b.struts.xml配置使用多配置文件
+  	  struts-user.xml//用户模块
+  	  struts-cart.xml//购物车模块
+  	  struts-order.xml//订单模块
+  	  struts-main.xml//产品浏览
+  	  利用struts.xml加载上述4个模块配置文件
+  	c.连接池组件配置文件
+  	  src/db.properties
+  4)页面,CSS,JS等文件
+    /WebRoot/css
+    /WebRoot/js
+    /WebRoot/images 系统页面图片
+    /WebRoot/productImages 图书图片
+    /WebRoot/user/用户模块页面
+    /WebRoot/cart/购物车页面
+    /WebRoot/order/订单模块页面
+    /WebRoot/main/产品浏览模块页面
+    /WebRoot/common/共通页面,页眉和页脚
+  5)共通问题
+   --DbUtil.java. 
+    1)dbcp连接池使用,(c3p0,proxool)
+    2)ThreadLocal使用;用于将conn对象与当前线程绑定
+    请求处理-->使用conn操作1-->使用conn操作2
+    -->...-->最后释放conn对象
+    在前面操作中使用同一个conn.
+   --异常处理问题
+    利用strut.xml中的<global-exception-mappings>
+    配置解决.
+   --事务管理问题
+    利用拦截器组件控制事务提交和回滚,connection关闭
+
+ ===============用户管理模块===============
+ 一.用户注册
+   1.了解需求
+   	1)当用户点击"注册"按钮后,执行客户端js检查
+   	  邮箱地址:非空,格式,唯一性
+   	  昵称:非空,长度4-20(中文字符算2个)
+   	  密码:非空,长度6-20(只允用字母和数字)
+   	  确认密码:非空,与密码一致
+   	  验证码:非空,正确性
+   	2)通过客户端检查,完成以下处理
+   	  将表单数据写入到d_user表
+   	  生成验证码(采用uuid当做验证码)
+   	  给用户邮箱发送验证码(uuid-userId)
+   	3)操作成功后进入邮箱验证页面
+   2.相关的数据表结构
+   	 了解d_user表结构
+   3.编写程序
+     1)先编写服务器端实现
+       a.编写Action组件
+   	    根据请求页面定义input属性
+   	    根据响应页面定义output属性
+   	    定义业务方法execute,编写服务器处理.
+   	    以Action为主线,需要entity,dao,util,
+   	    编写相应实现
+   	   b.在模块配置文件中,配置Action组件
+   	   
+  二.邮箱验证
+  	1.在邮箱验证页面,点击"完成"按钮,先执行js检查
+  		非空检查
+  	2.通过js检查,服务器端主要逻辑如下
+  		1)将用户输入的uuid-userId验证码解析,
+  			解析出userId和uuid
+  		2)去d_user表中检查uuid和userId正确性
+  		3)如果验证码正确,将d_user的
+  			is_email_verify设置成"Y",
+  			页面跳转到register_ok.jsp
+  		4)如果验证码不正确,页面返回verify_form.jsp
+  			提示错误信息.
+  三.登录
+    1.用户输入email和密码后,点击"登录"执行js检查
+    	Email:非空,格式
+    	密码:非空
+    2.通过js检查后,服务器端处理如下:
+      1)验证email和密码的正确性,不正确返回登录
+      	页面,显示错误信息
+      2)如果email和密码正确,检查邮箱是否通过验证
+      	,如果未通过验证跳转到verify_form.jsp
+      3)如果邮箱通过验证,更新d_user表的
+      last_login_time和last_login_ip信息.
+      	进入/main/main.jsp
+      4)将user信息写入session
+   四.main.jsp页眉,登录状态显示
+     如果用户登录,显示用户昵称和登出按钮
+     如果未登录,只显示登录和注册按钮
+ ==================================
+	发送一个action请求,将返回的信息填充到标签所在位置
+	<s:action name="findnew" namespace="/main"
+			executeResult="true">
+	</s:action>
+===============产品浏览模块需求===================
+一.主界面main.jsp
+    1.编辑推荐区域的显示
+    采用ajax方式加载recommend.jsp
+   该区域显示两个图书信息.这两个图书信息随机从数据库获取.
+    2.热销图书区域的显示
+    采用ajax方式加载hot.jsp
+    该区域显示8个图书信息.这8个图书信息从
+    d_item订单销量表中统计获取销量最多的前8个.
+    
+	select d_product.*
+	from d_item join d_product 
+		on(d_item.product_id=d_product.id)
+	group by product_id
+	order by sum(product_num) desc
+	limit 0,8;
+	3.新书热卖榜
+		将main.jsp右侧排行榜信息提取成一个jsp,
+		采用ajax方式加载.
+	  该区域显示热销图书的排行.将热销图书区域的数据显示.
+二.分类浏览页面
+    1.左侧类别显示
+   根据父类别ID查询出子类别信息并统计出所包含的产品数量.
+   select dc.*,count(dcp.product_id)
+   from d_category dc 
+   	left outer join d_category_product dcp 
+   	on(dc.id=dcp.cat_id)
+   where dc.parent_id=2
+   group by dc.id
+   order by dc.turn
+   2.右侧产品信息显示
+    根据当前类别ID查询出所包含的产品信息.
+    select dp.*,db.* 
+    from d_category_product dcp
+    	join d_product dp on(dcp.product_id=dp.id)
+    	join d_book db on(dp.id=db.id)
+    where dcp.cat_id=9
+===============购物车+订单模块================
+购物车与shoppingcart工程实现相同.代码结构稍改动下
+1.Cart业务组件方法的API进一步简化
+2.编写个CartFactory,用于获取与session相关的Cart对象
+3.购买采用Ajax请求处理,其他的采用原有方式,页面整体刷新
+订单模块
+1.确认订单页面:
+ 将Cart对象中取出确认购买的商品和金额,显示到页面
+2.填写送货地址
+  当用户输入地址后,单击"下一步"按钮,创建一个订单,
+  将订单信息写入数据库.步骤如下:
+  1)将表单信息写入d_order表,其他字段从session等范围获取
+  2)获取order_id,将确认订单列表信息向d_item写入若干条记录.
+  --追加功能,当用户在选择地址下拉单,选择"填写新地址"时,
+  	将表单记录向d_receive_address表写入一条记录.
+  	如果选择以前地址,不需要操作.
+  3)清空购物车中的商品信息
+ 完成以上功能后,实现选择地址下拉单的处理.
+  1)页面加载完毕后,采用Ajax将d_receive_address表中
+  当前用户使用过的地址取出,以json返回,形成Option给下拉单.
+  2)当用户改变下拉单选项后,发送Ajax请求,去d_receive_address
+  表中获取地址信息,以json返回,填充到表单输入框中
+  
+==============登录检查问题===================
+编写一个登录检查的拦截器.参考以前课上案例
+可以添加在购物车"结算"请求处理的<action>配置中.
+这样点"结算"时执行登录检查.
+
+
+
+
+
+
+
+
+
+
+
+   

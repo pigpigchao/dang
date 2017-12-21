@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Struts2Diagram version="2.0">
+  <package name="user" location="50,50" size="170,471">
+    <action name="regist" location="10,20" size="150,41">
+      <result name="verify">
+        <resourceEdge source="verify" routing="0" target="verify_form.jsp" />
+      </result>
+    </action>
+    <action name="checkEmail" location="10,120" size="150,41">
+      <result name="success" />
+    </action>
+    <action name="checkPostalCode" location="10,220" size="150,62">
+      <result name="fail">
+        <resourceEdge source="fail" routing="0" target="verify_form.jsp" />
+      </result>
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="register_ok.jsp" />
+      </result>
+    </action>
+    <action name="checkUser" location="10,320" size="150,83">
+      <result name="main">
+        <resourceEdge source="main" routing="0" target="main.jsp" />
+      </result>
+      <result name="verify">
+        <resourceEdge source="verify" routing="0" target="verify_form.jsp" />
+      </result>
+      <result name="login">
+        <resourceEdge source="login" routing="0" target="login_form.jsp" />
+      </result>
+    </action>
+    <action name="exit" location="10,420" size="150,41">
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="main.jsp" />
+      </result>
+    </action>
+  </package>
+  <webResource name="verify_form.jsp" path="/user/verify_form.jsp" location="274,13" size="150,55" />
+  <webResource name="register_ok.jsp" path="/user/register_ok.jsp" location="50,200" size="150,55" />
+  <webResource name="main.jsp" path="/main/main.jsp" location="212,668" size="150,55" />
+  <webResource name="login_form.jsp" path="/user/login_form.jsp" location="372,434" size="150,55" />
+</Struts2Diagram>
+
